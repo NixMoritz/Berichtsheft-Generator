@@ -23,6 +23,7 @@ func getWeekDates(year int, month time.Month, day int) (int, string, string, map
 		"Mittwoch":   monday.AddDate(0, 0, 2).Format("02.01.2006"),
 		"Donnerstag": monday.AddDate(0, 0, 3).Format("02.01.2006"),
 		"Freitag":    monday.AddDate(0, 0, 4).Format("02.01.2006"),
+		"Saturday":   monday.AddDate(0, 0, 5).Format("02.01.2006"),
 	}
 
 	return isoWeek, monday.Format("02.01"), sunday.Format("02.01.2006"), days
@@ -39,6 +40,7 @@ func generateAndWriteFileNames(year int, outputFolder string) error {
 
 			isoWeek, startDate, endDate, days := getWeekDates(year, month, day)
 			fileName := fmt.Sprintf("KW%d_%s-%s.txt", isoWeek, startDate, endDate)
+
 			// Derive the file path relative to the output folder
 			filePath := filepath.Join(outputFolder, fileName)
 
@@ -144,7 +146,6 @@ func main() {
 		}
 	}
 
-	// Example usage
 	err := generateAndWriteFileNames(year, outputFolder)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -152,4 +153,5 @@ func main() {
 	}
 
 	fmt.Printf("Your Berichtshefte have been generated.\nYear used for operation: %d\nThe Berichtshefte are located at: %s\n", year, outputFolder)
+
 }

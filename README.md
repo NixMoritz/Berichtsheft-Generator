@@ -3,6 +3,7 @@
 ## Overview
 
 Berichtsheft Generator is a versatile program written in GoLang. It is designed to generate weekly reports (Berichtshefte) for a specified year, creating individual text files for each week with specific templates.
+
 ## Usage
 
 ### Prerequisites
@@ -13,24 +14,31 @@ Make sure you have [Go](https://golang.org/) installed on your machine.
 
 1. **Adjusting Parameters:**
    Modify the parameters in the `main` function of the `main.go` file:
+
    - `year`: Set the default year for report generation.
    - `createNewFolder`: Set to true to create a new folder for the reports.
    - `outputFolder`: Set the default output folder path.
 
 2. **Run the `main.go` Variant:**
    Execute the `main.go` file using the Go compiler:
+
    ```bash
    go run main.go
    ```
-You can also provide arguments when calling the program:
+
+   You can also provide arguments when calling the program:
+
    ```bash
    go run main.go [year] [createNewFolder] [outputFolder]
    ```
-Alternatively, build the executable:
+
+   Alternatively, build the executable:
+
    ```bash
    go build main.go
    ```
-Run the generated executable.
+
+   Run the generated executable.
 
 3. **Example:**
    ```bash
@@ -44,13 +52,20 @@ Run the generated executable.
 
 2. **Command-Line Arguments:**
    The program accepts optional command-line arguments:
-    - `Year`: Specify the year for report generation.
-    - `Create New Folder`: Optionally, provide "y" or "1" to create a new folder for the reports.
-    - `Output Folder`: Optionally, provide the path to the output folder as the third argument.
 
-3. **Example:**
+   - `Year`: Specify the year for report generation.
+   - `Create New Folder`: Optionally, provide "y" or "1" to create a new folder for the reports.
+   - `Output Folder`: Optionally, provide the path to the output folder as the third argument.
+
+3. **Example: Windows**
+
    ```bash
    Berichtsheft-Generator.exe 2024 y C:\Reports
+   ```
+
+4. **Example: MacOS**
+   ```bash
+   ./Berichtsheft-Generator.exe 2024 y
    ```
 
 ## Notes
@@ -67,45 +82,106 @@ The generated reports are saved as text files in the specified output folder. Ea
 
 The content of each report file follows a template with entries for each weekday, details about vocational school days, and a thematic section.
 
+Template used in the exe: **template.txt**
+
 ```plaintext
-Montag, xx.xx.xx
+Montag, {{.Montag}}
 
--   
+●
+    ◦
 
-Dienstag, xx.xx.xx
-    
--   
+Dienstag, {{.Dienstag}}
 
-Mittwoch, xx.xx.xx
+●
+    ◦
 
--   
+Mittwoch, {{.Mittwoch}}
 
-Donnerstag, xx.xx.xx
+●
+    ◦
 
--   
+Donnerstag, {{.Donnerstag}}
 
-Freitag, xx.xx.xx
+●
+    ◦
 
--   
+Freitag, {{.Freitag}}
+
+●
+    ◦
 
 _________________________________________________________________________________________________________________________
 
 Berufsschule:
 
-Montag, xx.xx.xx
+Montag, {{.Montag}}
 
--   
+●
+    ◦
 
-Mittwoch, xx.xx.xx
+Dienstag, {{.Dienstag}}
 
--   
+●
+    ◦
 
 _________________________________________________________________________________________________________________________
 
 Thema:
+
+
 ```
 
-Feel free to customize the template based on your reporting needs.
+Another template provided uses a different kind of format: **template2.txt**
+
+```
+Montag, {{.Montag}}
+
+-
+   >
+
+Dienstag, {{.Dienstag}}
+
+-
+   >
+
+Mittwoch, {{.Mittwoch}}
+
+-
+   >
+
+Donnerstag, {{.Donnerstag}}
+
+-
+   >
+
+Freitag, {{.Freitag}}
+
+-
+   >
+
+_________________________________________________________________________________________________________________________
+
+Berufsschule:
+
+Montag, {{.Montag}}
+
+-
+   >
+
+Mittwoch, {{.Mittwoch}}
+
+-
+   >
+
+_________________________________________________________________________________________________________________________
+
+Thema:
+
+```
+
+</details>
+
+Feel free to customize the template based on your reporting needs. Use the Days as seen in the template and change it to your desired school days. The code uses the file with the name **{template.txt}**, this is the one you need to adjust or rename a different file with your desired format to it.
 
 ## License
 

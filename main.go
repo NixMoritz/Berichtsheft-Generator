@@ -1,12 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
+	"text/template"
 	"time"
 )
+
+var tmpl *template.Template
 
 func getWeekDates(year int, month time.Month, day int) (int, string, string, map[string]string) {
 	date := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
@@ -30,6 +34,12 @@ func getWeekDates(year int, month time.Month, day int) (int, string, string, map
 }
 
 func generateAndWriteFileNames(year int, outputFolder string) error {
+	var err error
+	tmpl, err = template.ParseFiles("template.txt")
+	if err != nil {
+		return fmt.Errorf("Error parsing template: %w", err)
+	}
+
 	for month := time.January; month <= time.December; month++ {
 		// Create a file for each week in the month
 		for day := 1; day <= 31; day += 7 {
@@ -49,44 +59,21 @@ func generateAndWriteFileNames(year int, outputFolder string) error {
 				return err
 			}
 
-			// Insert the template with actual dates for each day into the file
-			template := fmt.Sprintf(`Montag, %s
+			data := map[string]string{
+				"Montag":     days["Montag"],
+				"Dienstag":   days["Dienstag"],
+				"Mittwoch":   days["Mittwoch"],
+				"Donnerstag": days["Donnerstag"],
+				"Freitag":    days["Freitag"],
+			}
 
--   
+			var buffer bytes.Buffer
+			err = tmpl.Execute(&buffer, data)
+			if err != nil {
+				return fmt.Errorf("Error executing template: %w", err)
+			}
 
-Dienstag, %s
-    
--   
-
-Mittwoch, %s
-
--   
-
-Donnerstag, %s
-
--   
-
-Freitag, %s
-
--   
-
-_________________________________________________________________________________________________________________________
-
-Berufsschule:
-
-Montag, %s
-
--   
-
-Mittwoch, %s
-
--   
-
-_________________________________________________________________________________________________________________________
-
-Thema:`, days["Montag"], days["Dienstag"], days["Mittwoch"], days["Donnerstag"], days["Freitag"], days["Montag"], days["Mittwoch"])
-
-			_, err = file.WriteString(template)
+			_, err = file.WriteString(buffer.String())
 			if err != nil {
 				return err
 			}
